@@ -1,0 +1,10 @@
+#lang rhombus
+
+export:
+  read_all_text
+
+fun read_all_text(input_file):
+  def input_port = Port.Input.open_file(input_file)
+  input_port.read_string(500)
+
+read_all_text("file.txt")
