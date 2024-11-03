@@ -3,12 +3,17 @@
 export:
   fold
   filter
-  
+
+/// Applies a function to each element of the collection, threading
+/// an accumulator through the computation. If the input function is f and the elements
+/// are i0..in then computers f(..(f s 10)...) in.
 fun fold(folder, state, source):
   if source.length() == 0
   | state
   | fold(folder, folder(state, source.first), source.rest)
 
+/// Returns a new collection containing only the elemnts of the collection for which
+/// the given predicate returns "true".
 fun filter(predicate, source):
   cond
   | source.length() == 0: []
