@@ -1,0 +1,16 @@
+#lang rhombus
+
+export:
+  fold
+  filter
+  
+fun fold(folder, state, source):
+  if source.length() == 0
+  | state
+  | fold(folder, folder(state, source.first), source.rest)
+
+fun filter(predicate, source):
+  cond
+  | source.length() == 0: []
+  | predicate(source.first): List.append([source.first], filter(predicate, source.rest))
+  | ~else: filter(predicate, source.rest)
