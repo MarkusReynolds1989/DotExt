@@ -14,3 +14,6 @@ fun filter(predicate, source):
   | source.length() == 0: []
   | predicate(source.first): List.append([source.first], filter(predicate, source.rest))
   | ~else: filter(predicate, source.rest)
+
+check fold(fun (acc, i): acc + i, 0, [1,2,3,4]) ~is 10
+check filter(fun (x): x > 1, [1,2,3,4]) ~is [2,3,4]
