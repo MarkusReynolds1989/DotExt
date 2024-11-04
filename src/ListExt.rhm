@@ -1,12 +1,13 @@
-#lang rhombus
+#lang rhombus/static
 
 export:
   fold
   filter
+  for_all
 
 /// Returns a new collection containing only the elemnts of the collection for which
 /// the given predicate returns "true".
-fun filter(predicate, source):
+fun filter(predicate :: Any -> Boolean , source :: List) :: List :
   cond
   | source.length() == 0:
       []
@@ -18,13 +19,12 @@ fun filter(predicate, source):
 /// Applies a function to each element of the collection, threading
 /// an accumulator through the computation. If the input function is f and the elements
 /// are i0..in then computers f(..(f s 10)...) in.
-fun fold(folder, state, source):
+fun fold(folder :: (Any, Any) -> Any, state :: Any, source :: List) :: Any:
   if source.length() == 0
   | state
   | fold(folder, folder(state, source.first), source.rest)
 
-
-fun for_all(predicate, source):
+fun for_all(predicate :: Any -> Boolean, source :: List) :: Boolean:
   cond
   | source.length() == 0:
       #true
@@ -33,6 +33,11 @@ fun for_all(predicate, source):
   | ~else :
       #false
 
+fun generate_list(start :: Real, end :: Real):
+  if start > end
+  | []
+  | List.cons(start, generate_list(start + 1, end))
+    
 check fold(fun (acc, i): acc + i, 0, [1,2,3,4]) ~is 10
 check filter(fun (x): x > 1, [1,2,3,4]) ~is [2,3,4]
 check for_all(fun (x): x > 1, [1,2,3,4]) ~is #false

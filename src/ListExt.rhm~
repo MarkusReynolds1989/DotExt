@@ -1,0 +1,38 @@
+#lang rhombus
+
+export:
+  fold
+  filter
+
+/// Returns a new collection containing only the elemnts of the collection for which
+/// the given predicate returns "true".
+fun filter(predicate, source):
+  cond
+  | source.length() == 0:
+      []
+  | predicate(source.first):
+      List.append([source.first], filter(predicate, source.rest))
+  | ~else:
+      filter(predicate, source.rest)
+
+/// Applies a function to each element of the collection, threading
+/// an accumulator through the computation. If the input function is f and the elements
+/// are i0..in then computers f(..(f s 10)...) in.
+fun fold(folder, state, source):
+  if source.length() == 0
+  | state
+  | fold(folder, folder(state, source.first), source.rest)
+
+
+fun for_all(predicate, source):
+  cond
+  | source.length() == 0:
+      #true
+  | predicate(source.first) == #true:
+      for_all(predicate, source.rest())
+  | ~else :
+      #false
+
+check fold(fun (acc, i): acc + i, 0, [1,2,3,4]) ~is 10
+check filter(fun (x): x > 1, [1,2,3,4]) ~is [2,3,4]
+check for_all(fun (x): x > 1, [1,2,3,4]) ~is #false

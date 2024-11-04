@@ -1,0 +1,10 @@
+#lang rhombus/static
+
+fun filter(predicate :: Any -> Boolean, source :: Array):
+  def mutable result :: Array = Array()
+  for(item: source):
+    when predicate(item)
+    | result := result.append(Array(item))
+  result
+    
+check filter(fun (x): x > 1, Array(1,2,3,4)) ~matches Array(2,3,4)
